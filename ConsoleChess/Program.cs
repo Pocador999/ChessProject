@@ -1,4 +1,5 @@
-﻿using chess;
+﻿using board;
+using chess;
 
 namespace ConsoleChess
 {
@@ -10,7 +11,20 @@ namespace ConsoleChess
             {
                 ChessMatch match = new ChessMatch();
 
-                Screen.printBoard(match.board);
+                while (!match.finished)
+                {
+                    Console.Clear();
+                    Screen.printBoard(match.board);
+
+                    Console.Write("\nOrigin: ");
+                    Position origin = Screen.readPositionChess().toPosition();
+
+                    Console.Write("Destination: ");
+                    Position destination = Screen.readPositionChess().toPosition();
+
+                    match.executeMove(origin, destination);
+                }
+
             }
             catch (Exception e)
             {
