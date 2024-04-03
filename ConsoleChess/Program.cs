@@ -16,10 +16,7 @@ namespace ConsoleChess
                     try
                     {
                         Console.Clear();
-                        Screen.printBoard(match.board);
-
-                        Console.WriteLine("\nTurn: " + match.turn);
-                        Console.WriteLine("Waiting for play: " + match.currentPlayer);
+                        Screen.printMatch(match);
 
                         Console.Write("\nOrigin: ");
                         Position origin = Screen.readPositionChess().toPosition();
