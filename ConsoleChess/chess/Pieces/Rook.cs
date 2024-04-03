@@ -16,19 +16,17 @@ namespace chess.pieces
             Piece p = board.piece(position);
             return p == null || p.color != this.color;
         }
-
         public override bool[,] possibleMoves()
         {
             bool[,] mat = new bool[board.rows, board.columns];
-
             Position pos = new Position(0, 0);
 
             //above
             pos.defineValues(position.row - 1, position.column);
-            while (board.validPosition(pos) && canMove(pos))
+            while(board.validPosition(pos) && canMove(pos))
             {
-                mat[board.rows, board.columns] = true;
-                if (board.piece(pos) != null && board.piece(pos).color != color)
+                mat[pos.row, pos.column] = true;
+                if (board.piece(pos) != null && board.piece(pos).color != this.color)
                 {
                     break;
                 }
@@ -37,10 +35,10 @@ namespace chess.pieces
 
             //below
             pos.defineValues(position.row + 1, position.column);
-            while(board.validPosition(pos) && canMove(pos))
+            while (board.validPosition(pos) && canMove(pos))
             {
-                mat[board.rows, board.columns] = true;
-                if (board.piece(pos) != null && board.piece(pos).color != color)
+                mat[pos.row, pos.column] = true;
+                if (board.piece(pos) != null && board.piece(pos).color != this.color)
                 {
                     break;
                 }
@@ -48,11 +46,11 @@ namespace chess.pieces
             }
 
             //right
-            pos.defineValues(position.row - 1, position.column);
+            pos.defineValues(position.row, position.column + 1);
             while (board.validPosition(pos) && canMove(pos))
             {
-                mat[board.rows, board.columns] = true;
-                if (board.piece(pos) != null && board.piece(pos).color != color)
+                mat[pos.row, pos.column] = true;
+                if (board.piece(pos) != null && board.piece(pos).color != this.color)
                 {
                     break;
                 }
@@ -61,17 +59,17 @@ namespace chess.pieces
 
             //left
             pos.defineValues(position.row, position.column - 1);
-            while(board.validPosition(pos) && canMove(pos))
+            while (board.validPosition(pos) && canMove(pos))
             {
-                mat[board.rows, board.columns] = true;
-                if(board.piece(pos) != null && board.piece(pos).color != color)
+                mat[pos.row, pos.column] = true;
+                if (board.piece(pos) != null && board.piece(pos).color != this.color)
                 {
                     break;
                 }
                 pos.column = pos.column - 1;
             }
-
             return mat;
         }
+
     }
 }
