@@ -32,7 +32,7 @@ namespace ConsoleChess
                         Position destination = Screen.readPositionChess().toPosition();
 
                         match.validateFinalPosition(origin, destination);
-                        match.makeMove(origin, destination);
+                        match.makePlay(origin, destination);
                     }
                     catch(BoardException e)
                     {

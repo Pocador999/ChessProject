@@ -17,7 +17,6 @@ namespace chess.pieces
         public override bool[,] possibleMoves()
         {
             bool[,] mat = new bool[board.rows, board.columns];
-            
             Position pos = new Position(0, 0);
             
             //above

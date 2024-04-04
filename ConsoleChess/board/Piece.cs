@@ -19,6 +19,11 @@
         {
             moves++;
         }
+
+        public void decrementMoves()
+        {
+            moves--;
+        }
         
         public bool existPossibleMoves()
         {
