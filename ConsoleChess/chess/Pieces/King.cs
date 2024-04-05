@@ -12,7 +12,7 @@ namespace chess.pieces
         private bool canMove(Position position)
         {
             Piece p = board.piece(position);
-            return p == null || p.color != this.color;
+            return p == null || p.color != color;
         }
         public override bool[,] possibleMoves()
         {

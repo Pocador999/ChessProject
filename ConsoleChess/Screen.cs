@@ -7,7 +7,7 @@ namespace ConsoleChess
     {
         public static void printMatch(ChessMatch match)
         {
-            printBoard(match.board);
+            printBoard(match.board);    
 
             Console.WriteLine();
             printCapturedPieces(match);
