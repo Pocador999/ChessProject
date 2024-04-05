@@ -4,7 +4,7 @@ using System.Reflection.PortableExecutable;
 
 namespace chess
 {
-    class ChessMatch
+    class ChessMatch 
     {
         public Board board { get; private set; }
         public int turn { get; private set; }
@@ -55,12 +55,13 @@ namespace chess
         {
             Piece capturedPiece = executeMove(origin, destination);
 
-            if(isInCheck(currentPlayer))
+            if (isInCheck(currentPlayer))
             {
                 undoMove(origin, destination, capturedPiece);
                 throw new BoardException("You can't put yourself in check!");
             }
-            if(isInCheck(oponent(currentPlayer)))
+
+            if (isInCheck(oponent(currentPlayer)))
             {
                 check = true;
             }
@@ -69,8 +70,15 @@ namespace chess
                 check = false;
             }
 
-            turn++;
-            changePlayer();
+            if (testCheckMate(oponent(currentPlayer)))
+            {
+                finished = true;
+            }
+            else
+            {
+                turn++;
+                changePlayer();
+            }
         }
 
         public void validateOriginPosition(Position pos)
@@ -177,6 +185,37 @@ namespace chess
             }
             return false;
         }
+
+        public bool testCheckMate(Color color)
+        {
+            if (!isInCheck(color))
+            {
+                return false;
+            }
+            foreach(Piece x in piecesInGame(color))
+            {
+                bool[,] mat = x.possibleMoves();
+                for(int i = 0; i < board.rows; i++)
+                {
+                    for(int j = 0; j < board.columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = executeMove(origin, destination);
+                            bool checkTest = isInCheck(color);
+                            undoMove(origin, destination, capturedPiece);
+                            if (!checkTest)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }   
 
         public void placeNewPiece(char column, int row, Piece p)
         {

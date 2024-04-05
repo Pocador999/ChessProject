@@ -34,17 +34,18 @@ namespace ConsoleChess
                         match.validateFinalPosition(origin, destination);
                         match.makePlay(origin, destination);
                     }
-                    catch(BoardException e)
+                    catch (BoardException e)
                     {
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
                     }
                 }
-
+                Console.Clear();
+                Screen.printMatch(match);
             }
             catch (Exception e)
             {
-               Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
         }
     }

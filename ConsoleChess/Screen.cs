@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using board;
+﻿using board;
 using chess;
 
 namespace ConsoleChess
@@ -13,10 +12,18 @@ namespace ConsoleChess
             Console.WriteLine();
             printCapturedPieces(match);
             Console.WriteLine("Turn: " + match.turn);
-            Console.WriteLine("Waiting for play: " + match.currentPlayer);
-            if (match.check)
+            if(!match.finished)
             {
-                Console.WriteLine("Check!");
+                Console.WriteLine("Waiting for play: " + match.currentPlayer);
+                if (match.check)
+                {
+                    Console.WriteLine("\nCheck!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nCheckmate!");
+                Console.WriteLine("\nWinner: " + match.currentPlayer);
             }
         }
 
