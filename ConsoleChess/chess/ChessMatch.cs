@@ -1,19 +1,25 @@
 ﻿using board;
 using chess.pieces;
-using System.Reflection.PortableExecutable;
-using System.Runtime.ConstrainedExecution;
+using System.Diagnostics;
 
 namespace chess
 {
     class ChessMatch 
     {
         public Board board { get; private set; }
+
         public int turn { get; private set; }
+
         public Color currentPlayer { get; private set; }
+
         public bool finished { get; private set; }
+
         private HashSet<Piece> pieces;
+
         private HashSet<Piece> captured;
+
         public bool check { get; private set; }
+
         public Piece vulnerableEnPassant { get; private set; }
 
         public ChessMatch()
@@ -144,18 +150,73 @@ namespace chess
 
             Piece p = board.piece(destination);
 
-            // # Special Play: Promotion
+            //# Special Play: Promotion
             if (p is Pawn)
             {
                 if ((p.color == Color.White && destination.row == 0) || (p.color == Color.Black && destination.row == 7))
                 {
-                    p = board.removePiece(destination);
-                    pieces.Remove(p);
-                    Piece queen = new Queen(board, p.color);
-                    board.placePiece(queen, destination);
-                    pieces.Add(queen);
+                    handlePromotion(p, destination);
                 }
             }
+
+            void handlePromotion(Piece pawn, Position destination)
+            {
+                bool validChoice = false;
+                while (!validChoice)
+                {
+                    Console.WriteLine("Choose the piece you want to promote to: ");
+                    Console.WriteLine("1 - Queen");
+                    Console.WriteLine("2 - Rook");
+                    Console.WriteLine("3 - Bishop");
+                    Console.WriteLine("4 - Horse");
+
+                    try
+                    {
+                        int choice = int.Parse(Console.ReadLine());
+                        switch (choice)
+                        {
+                            case 1:
+                                board.removePiece(destination);
+                                pieces.Remove(pawn);
+                                Piece promotedQueen = new Queen(board, pawn.color);
+                                board.placePiece(promotedQueen, destination);
+                                pieces.Add(promotedQueen);
+                                validChoice = true;
+                                break;
+                            case 2:
+                                board.removePiece(destination);
+                                pieces.Remove(pawn);
+                                Piece promotedRook = new Rook(board, pawn.color);
+                                board.placePiece(promotedRook, destination);
+                                pieces.Add(promotedRook);
+                                validChoice = true;
+                                break;
+                            case 3:
+                                board.removePiece(destination);
+                                pieces.Remove(pawn);
+                                Piece promotedBishop = new Bishop(board, pawn.color);
+                                board.placePiece(promotedBishop, destination);
+                                pieces.Add(promotedBishop);
+                                break;
+                            case 4:
+                                board.removePiece(destination);
+                                pieces.Remove(pawn);
+                                Piece promotedHorse = new Horse(board, pawn.color);
+                                board.placePiece(promotedHorse, destination);
+                                pieces.Add(promotedHorse);
+                                break;
+                            default:
+                                Console.WriteLine("Invalid choice! Please choose a number between 1 and 4.");
+                                break;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Invalid imput! Please enter a number.");
+                    }
+                }
+            }
+            // End of Special Play: Promotion
 
             if (isInCheck(oponent(currentPlayer)))
             {
@@ -175,6 +236,7 @@ namespace chess
                 turn++;
                 changePlayer();
             }
+
             // # En Passant
             if (p is Pawn && (destination.row == origin.row - 2 || destination.row == origin.row + 2))
             {
